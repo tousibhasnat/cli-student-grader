@@ -36,7 +36,7 @@ void main(){
           Map<String, dynamic> newStudent = {
             "name": name,
             "scores": <int>[],
-            "subjects": {subject},
+            "subjects": {...subject},
             "bonus": null,
             "comment": null
           };
@@ -45,8 +45,36 @@ void main(){
         }
         break;
       case '2':
-        print("Record Score");
+      if(students.isEmpty) {
+        print("No students found! Add a student first.");
+          break;
+      }
+      print("\n--- Select a Student ---");
+      for (int i = 0; i < students.length; i++) {
+          print("${i + 1}. ${students[i]["name"]}");
+        }
+
+      stdout.write("Enter student number: ");
+        String? input = stdin.readLineSync();
+        int? studentId = int.tryParse(input ?? "");
+
+      if (studentId != null && studentId > 0 && studentId <= students.length) {
+          var allStudent = students[studentId - 1];
+
+      stdout.write("Enter score for ${allStudent['name']}: ");
+          int? score = int.tryParse(stdin.readLineSync() ?? "");
+          
+          if (score != null && score >= 0 && score <= 100) {
+            allStudent["scores"].add(score);
+            print("Score added!");
+          } else {
+            print("Invalid score.");
+          }
+        } else {
+          print("Invalid selection.");
+        }
         break;
+
       case '3':
         print("Add Bonus Points");
         break;
