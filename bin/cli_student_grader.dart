@@ -9,7 +9,7 @@ void main(){
 
 //The Menu Loop
 
- String? choice;
+  var choice;
 
  do{
   print('''
@@ -29,7 +29,20 @@ void main(){
     
     switch(choice){
       case '1':
-        print("Add Student");
+        case '1':
+        stdout.write("Enter student name: ");
+        String? name = stdin.readLineSync();
+        if (name != null && name.isNotEmpty) {
+          Map<String, dynamic> newStudent = {
+            "name": name,
+            "scores": <int>[],
+            "subjects": {subject},
+            "bonus": null,
+            "comment": null
+          };
+          students.add(newStudent);
+          print("Student '$name' added successfully!");
+        }
         break;
       case '2':
         print("Record Score");
@@ -48,6 +61,9 @@ void main(){
         break;
       case '7':
         print("Class Summary");
+        break;
+      case '8':
+        print("Exiting");
         break;
       }
 } while (choice != '8');
