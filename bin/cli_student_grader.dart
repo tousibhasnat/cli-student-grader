@@ -191,8 +191,88 @@ void main(){
 
 
       case '6':
-        print("View Report Card");
+      
+    if (students.isEmpty) {
+        print("No students found! Add a student first.");
         break;
+    }
+
+    print("\n--- Select a Student for Report Card ---");
+    for (int i = 0; i < students.length; i++) {
+        print("${i + 1}. ${students[i]["name"]}");
+    }
+
+    stdout.write("Enter student number: ");
+    String? input = stdin.readLineSync();
+    int? choice = int.tryParse(input ?? "");
+    if (choice == null || choice < 1 || choice > students.length) {
+        print("Invalid selection.");
+        break;
+    }
+
+    var student = students[choice - 1];
+    String name = student["name"];
+    List<int> scores = student["scores"];
+    int? bonus = student["bonus"];
+    String? comment = student["comment"];
+
+    
+    double rawAvg = 0.0;
+    if (scores.isNotEmpty) {
+        int sum = 0;
+        for (var score in scores) {
+            sum += score;
+        }
+        rawAvg = sum / scores.length;
+    }
+
+    int bonusPoints = bonus ?? 0;
+    double finalAvg = rawAvg + bonusPoints;
+    if (finalAvg > 100) finalAvg = 100;
+
+    String grade;
+    if (finalAvg >= 90) {
+        grade = "A";
+    } else if (finalAvg >= 80) {
+        grade = "B";
+    } else if (finalAvg >= 70) {
+        grade = "C";
+    } else if (finalAvg >= 60) {
+        grade = "D";
+    } else {
+        grade = "F";
+    }
+
+    String commentDisplay = comment?.toUpperCase() ?? "No comment provided";
+
+  
+    print('''
+╔══════════════════════════════╗
+║          REPORT CARD         ║
+╠══════════════════════════════╣
+║  Name:    $name              ║
+║  Scores:  $scores            ║
+║  Bonus:   ${bonus != null ? "+$bonus" : "None"}║
+║  Average: ${finalAvg.toStringAsFixed(1)}║
+║  Grade:   $grade             ║
+║  Comment: $commentDisplay    ║6
+╚══════════════════════════════╝
+''');
+
+    
+    String feedback = switch (grade) {
+        "A" => "Outstanding performance!",
+        "B" => "Good work, keep it up!",
+        "C" => "Satisfactory. Room to improve.",
+        "D" => "Needs improvement.",
+        "F" => "Failing. Please seek help.",
+        _   => "Unknown grade."
+    };
+    print(feedback);
+    break;
+
+
+
       case '7':
         print("Class Summary");
         break;
