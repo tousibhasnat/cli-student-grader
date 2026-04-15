@@ -135,8 +135,42 @@ void main(){
     break;
 
       case '4':
-        print("Add Comment");
+        
+
+        if (students.isEmpty) {
+        print("No students found! Add a student first.");
         break;
+        }
+
+        print("\n--- Select a Student for Comment ---");
+        for (int i = 0; i < students.length; i++) {
+        print("${i + 1}. ${students[i]["name"]}");
+        }
+
+        stdout.write("Enter student number: ");
+        String? input = stdin.readLineSync();
+        int? choice = int.tryParse(input ?? "");
+        if (choice == null || choice < 1 || choice > students.length) {
+        print("Invalid selection.");
+        break;
+        }
+
+        var student = students[choice - 1];
+
+        if (student["comment"] != null) {
+        print("Current comment: ${student["comment"]}");
+        }
+
+        stdout.write("Enter comment: ");
+        String? commentInput = stdin.readLineSync();
+        student["comment"] = commentInput;  
+
+        String displayComment = student["comment"]?.toUpperCase() ?? "(No comment)";
+        print("Comment set to: $displayComment");
+        print("Comment saved for ${student["name"]}."); 
+
+        
+
       case '5':
         print("View All Students");
         break;
