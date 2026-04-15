@@ -50,29 +50,39 @@ void main(){
           break;
       }
       print("\n--- Select a Student ---");
-      for (int i = 0; i < students.length; i++) {
-          print("${i + 1}. ${students[i]["name"]}");
-        }
+    for (int i = 0; i < students.length; i++) {
+        print("${i + 1}. ${students[i]["name"]}");
+      }
 
       stdout.write("Enter student number: ");
-        String? input = stdin.readLineSync();
-        int? studentId = int.tryParse(input ?? "");
+      String? input = stdin.readLineSync();
+      int? choice = int.tryParse(input ?? "");
+      if (choice == null || choice < 1 || choice > students.length) {
+        print("Invalid selection.");
+        break;
+      }
 
-      if (studentId != null && studentId > 0 && studentId <= students.length) {
-          var allStudent = students[studentId - 1];
+      var student = students[choice - 1];
 
-      stdout.write("Enter score for ${allStudent['name']}: ");
-          int? score = int.tryParse(stdin.readLineSync() ?? "");
-          
-          if (score != null && score >= 0 && score <= 100) {
-            allStudent["scores"].add(score);
-            print("Score added!");
-          } else {
-            print("Invalid score.");
-          }
+      print("Subjects: ${student["subjects"].join(', ')}");
+
+      int? validScore;
+    while (validScore == null) {
+        stdout.write("Enter score (0-100) for ${student["name"]}: ");
+        String? scoreInput = stdin.readLineSync();
+        int? parsed = int.tryParse(scoreInput ?? "");
+        if (parsed != null && parsed >= 0 && parsed <= 100) {
+            validScore = parsed;
         } else {
-          print("Invalid selection.");
+            print("Invalid score. Please enter a number between 0 and 100.");
         }
+      }
+
+      student["scores"].add(validScore);
+      print("Score $validScore recorded for ${student["name"]}.");
+      break;
+
+
         break;
 
       case '3':
