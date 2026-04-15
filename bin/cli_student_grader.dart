@@ -85,7 +85,20 @@ void main(){
           print("${i+1}. ${students[i]["name"]}");
         }
 
+        stdout.write("Select student number for bonus: ");
+        int? bId = int.tryParse(stdin.readLineSync() ?? "") != null
+        ? int.parse(stdin.readLineSync()!) - 1 : null;
         
+        if (bId != null && bId >= 0 && bId < students.length) {
+          stdout.write("Enter bonus points (1-10): ");
+          int? bonusValue = int.tryParse(stdin.readLineSync() ?? "");
+
+          if (bonusValue != null) {
+            // Checklist #6: Use ??= to assign only if current bonus is null
+            var initialBonus = students[bIdx]["bonus"];
+            students[bIdx]["bonus"] ??= bonusValue;
+
+            
 
       case '4':
         print("Add Comment");
