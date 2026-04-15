@@ -76,8 +76,17 @@ void main(){
         break;
 
       case '3':
-        print("Add Bonus Points");
+        if(students.isEmpty){
+          print("No students found! Add a student first.");
+        }
         break;
+        print("\n--- Select a Student----");
+        for (int i=0, i< student.length; i++){
+          print("${i+1}. ${students[i]["name"]}");
+        }
+
+        
+
       case '4':
         print("Add Comment");
         break;
