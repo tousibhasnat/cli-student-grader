@@ -255,7 +255,7 @@ void main(){
 ║  Bonus:   ${bonus != null ? "+$bonus" : "None"}║
 ║  Average: ${finalAvg.toStringAsFixed(1)}║
 ║  Grade:   $grade             ║
-║  Comment: $commentDisplay    ║6
+║  Comment: $commentDisplay    ║
 ╚══════════════════════════════╝
 ''');
 
@@ -274,8 +274,98 @@ void main(){
 
 
       case '7':
-        print("Class Summary");
+       
+    if (students.isEmpty) {
+        print("No students found! Add students first.");
         break;
+    }
+
+    int totalStudents = students.length;
+    double sumOfAverages = 0.0;
+    int studentsWithScores = 0;
+    double highestAvg = double.negativeInfinity;
+    double lowestAvg = double.infinity;
+    Set<String> uniqueGrades = {};
+
+    
+    List<double> computedAverages = [];
+    List<String> computedGrades = [];
+
+    for (var student in students) {
+        List<int> scores = student["scores"];
+        if (scores.isEmpty) {
+            computedAverages.add(0.0); 
+            computedGrades.add("N/A");
+            continue;
+        }
+
+        int sum = 0;
+        for (var score in scores) {
+            sum += score;
+        }
+        double rawAvg = sum / scores.length;
+
+        int bonus = student["bonus"] ?? 0;
+        double finalAvg = rawAvg + bonus;
+        if (finalAvg > 100) finalAvg = 100;
+
+        String grade;
+        if (finalAvg >= 90) grade = "A";
+        else if (finalAvg >= 80) grade = "B";
+        else if (finalAvg >= 70) grade = "C";
+        else if (finalAvg >= 60) grade = "D";
+        else grade = "F";
+
+        
+        computedAverages.add(finalAvg);
+        computedGrades.add(grade);
+
+        uniqueGrades.add(grade);
+        sumOfAverages += finalAvg;
+        studentsWithScores++;
+
+        if (finalAvg > highestAvg) highestAvg = finalAvg;
+        if (finalAvg < lowestAvg) lowestAvg = finalAvg;
+    }
+
+    if (studentsWithScores == 0) {
+        print("\n--- Class Summary ---");
+        print("Total Students: $totalStudents");
+        print("No scores recorded yet.");
+        break;
+    }
+
+    double classAverage = sumOfAverages / studentsWithScores;
+
+    
+    int passingStudents = 0;
+    for (int i = 0; i < students.length; i++) {
+        if (students[i]["scores"].isNotEmpty && computedAverages[i] >= 60) {
+            passingStudents++;
+        }
+    }
+
+    
+    var summaryLines = [
+        "===== CLASS SUMMARY =====",
+        "Total Students: $totalStudents",
+        "Students with Scores: $studentsWithScores",
+        "Class Average: ${classAverage.toStringAsFixed(1)}",
+        "Highest Average: ${highestAvg.toStringAsFixed(1)}",
+        "Lowest Average: ${lowestAvg.toStringAsFixed(1)}",
+        "Passing Students (avg >= 60): $passingStudents",
+        "Unique Grades: ${uniqueGrades.join(', ')}",
+        for (int i = 0; i < students.length; i++)
+            if (students[i]["scores"].isNotEmpty)
+                "${students[i]["name"]}: ${computedAverages[i].toStringAsFixed(1)} (${computedGrades[i]})"
+            else
+                "${students[i]["name"]}: No scores yet"
+    ];
+
+    for (var line in summaryLines) {
+        print(line);
+    }
+    break;
       case '8':
         print("Exiting");
         break;
