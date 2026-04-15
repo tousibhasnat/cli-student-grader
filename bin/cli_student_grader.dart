@@ -83,11 +83,56 @@ void main(){
       break;
 
 
-        break;
+    break;
 
       case '3':
         
+      
+    
+
+    if (students.isEmpty) {
+        print("No students found! Add a student first.");
         break;
+    }
+
+    
+    print("\n--- Select a Student for Bonus ---");
+    for (int i = 0; i < students.length; i++) {
+        print("${i + 1}. ${students[i]["name"]}");
+    }
+
+    
+    stdout.write("Enter student number: ");
+    String? input = stdin.readLineSync();
+    int? choice = int.tryParse(input ?? "");
+    if (choice == null || choice < 1 || choice > students.length) {
+        print("Invalid selection.");
+        break;
+    }
+
+    var student = students[choice - 1];
+
+   
+    if (student["bonus"] != null) {
+        print("${student["name"]} already has a bonus of ${student["bonus"]}.");
+        print("Bonus can only be set once.");
+        break;
+    }
+
+
+    stdout.write("Enter bonus points (1-10): ");
+    String? bInput = stdin.readLineSync();
+    int? bonus = int.tryParse(bInput ?? "");
+
+    if (bonus == null || bonus < 1 || bonus > 10) {
+        print("Invalid bonus. Must be between 1 and 10.");
+        break;
+    }
+
+    
+    student["bonus"] ??= bonus;
+    print("Bonus of $bonus added to ${student["name"]}!");
+    break;
 
       case '4':
         print("Add Comment");
