@@ -169,11 +169,27 @@ void main(){
         print("Comment set to: $displayComment");
         print("Comment saved for ${student["name"]}."); 
 
-        
+
 
       case '5':
-        print("View All Students");
+        if (students.isEmpty) {
+        print("No students found! Add a student first.");
         break;
+        }
+
+        print("\n--- All Students ---");
+        for (var student in students) {
+        var parts = [
+            student["name"],
+            "${student["scores"].length} scores",
+            if (student["bonus"] != null) "⭐ Has Bonus"
+        ];
+        print(parts.join(' — '));
+        }
+        break;
+
+
+
       case '6':
         print("View Report Card");
         break;
